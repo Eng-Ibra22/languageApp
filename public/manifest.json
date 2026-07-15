@@ -1,0 +1,15 @@
+{
+  "short_name": "Lingua",
+  "name": "Lingua Language Learning",
+  "icons": [
+    {
+      "src": "https://base44.com/logo_v2.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "theme_color": "#f97316"
+}

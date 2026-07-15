@@ -1,0 +1,41 @@
+{
+  "name": "UserProgress",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "lesson_id": {
+      "type": "string"
+    },
+    "language": {
+      "type": "string",
+      "enum": [
+        "English",
+        "Arabic",
+        "Turkish",
+        "Somali"
+      ]
+    },
+    "completed": {
+      "type": "boolean",
+      "default": false
+    },
+    "score": {
+      "type": "number",
+      "default": 0
+    },
+    "xp_earned": {
+      "type": "number",
+      "default": 0
+    },
+    "completed_date": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "user_email",
+    "lesson_id",
+    "language"
+  ]
+}

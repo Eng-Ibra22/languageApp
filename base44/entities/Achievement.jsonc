@@ -1,0 +1,41 @@
+{
+  "name": "Achievement",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "icon": {
+      "type": "string"
+    },
+    "xp_threshold": {
+      "type": "number"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "xp",
+        "streak",
+        "lessons",
+        "language",
+        "quiz"
+      ]
+    },
+    "requirement_value": {
+      "type": "number"
+    },
+    "image": {
+      "type": "string",
+      "format": "uri"
+    }
+  },
+  "required": [
+    "title",
+    "description",
+    "type",
+    "requirement_value"
+  ]
+}

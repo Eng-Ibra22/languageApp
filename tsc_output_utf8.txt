@@ -1,0 +1,103 @@
+﻿node_modules/canvas-confetti/src/confetti.js(878,7): error TS2591: Cannot find name 'module'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node` and then add 'node' to the types field in your tsconfig.
+src/components/ui/button.jsx(37,36): error TS2339: Property 'className' does not exist on type '{}'.
+src/components/ui/button.jsx(37,47): error TS2339: Property 'variant' does not exist on type '{}'.
+src/components/ui/button.jsx(37,56): error TS2339: Property 'size' does not exist on type '{}'.
+src/components/ui/button.jsx(37,62): error TS2339: Property 'asChild' does not exist on type '{}'.
+src/components/ui/input-otp.jsx(7,38): error TS2339: Property 'className' does not exist on type '{}'.
+src/components/ui/input-otp.jsx(7,49): error TS2339: Property 'containerClassName' does not exist on type '{}'.
+src/components/ui/input-otp.jsx(8,4): error TS2322: Type '{ ref: ForwardedRef<any>; containerClassName: string; className: string; }' is not assignable to type 'IntrinsicAttributes & (OTPInputProps & RefAttributes<HTMLInputElement>)'.
+  Property 'maxLength' is missing in type '{ ref: ForwardedRef<any>; containerClassName: string; className: string; }' but required in type '{ value?: string; onChange?: (newValue: string) => unknown; maxLength: number; textAlign?: "center" | "left" | "right"; onComplete?: (...args: any[]) => unknown; pushPasswordManagerStrategy?: "none" | "increase-width"; pasteTransformer?: (pasted: string) => string; containerClassName?: string; noScriptCSSFallback?: ...'.
+src/components/ui/input-otp.jsx(16,43): error TS2339: Property 'className' does not exist on type '{}'.
+src/components/ui/input-otp.jsx(21,42): error TS2339: Property 'index' does not exist on type '{}'.
+src/components/ui/input-otp.jsx(21,49): error TS2339: Property 'className' does not exist on type '{}'.
+src/components/ui/input.jsx(5,35): error TS2339: Property 'className' does not exist on type '{}'.
+src/components/ui/input.jsx(5,46): error TS2339: Property 'type' does not exist on type '{}'.
+src/components/ui/label.jsx(11,35): error TS2339: Property 'className' does not exist on type '{}'.
+src/lib/app-params.js(23,11): error TS2339: Property 'setItem' does not exist on type 'Map<any, any> | Storage'.
+  Property 'setItem' does not exist on type 'Map<any, any>'.
+src/lib/app-params.js(27,11): error TS2339: Property 'setItem' does not exist on type 'Map<any, any> | Storage'.
+  Property 'setItem' does not exist on type 'Map<any, any>'.
+src/lib/app-params.js(30,30): error TS2339: Property 'getItem' does not exist on type 'Map<any, any> | Storage'.
+  Property 'getItem' does not exist on type 'Map<any, any>'.
+src/lib/app-params.js(39,11): error TS2339: Property 'removeItem' does not exist on type 'Map<any, any> | Storage'.
+  Property 'removeItem' does not exist on type 'Map<any, any>'.
+src/lib/app-params.js(40,11): error TS2339: Property 'removeItem' does not exist on type 'Map<any, any> | Storage'.
+  Property 'removeItem' does not exist on type 'Map<any, any>'.
+src/lib/app-params.js(43,65): error TS2339: Property 'env' does not exist on type 'ImportMeta'.
+src/lib/app-params.js(46,87): error TS2339: Property 'env' does not exist on type 'ImportMeta'.
+src/lib/app-params.js(47,76): error TS2339: Property 'env' does not exist on type 'ImportMeta'.
+src/pages/ForgotPassword.jsx(46,14): error TS2322: Type '{ children: string; htmlFor: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/ForgotPassword.jsx(50,17): error TS2322: Type '{ id: string; type: string; autoComplete: string; autoFocus: true; placeholder: string; value: string; onChange: (e: any) => void; className: string; required: true; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'id' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/ForgotPassword.jsx(62,12): error TS2322: Type '{ children: string | Element; type: string; className: string; disabled: boolean; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/LessonDetail.jsx(32,63): error TS2345: Argument of type 'void' is not assignable to parameter of type 'Partial<any>'.
+src/pages/LessonDetail.jsx(55,31): error TS2345: Argument of type '{ user_email: any; lesson_id: string; language: any; completed: boolean; score: number; xp_earned: number; completed_date: string; }' is not assignable to parameter of type 'void'.
+src/pages/LessonDetail.jsx(115,14): error TS2322: Type '{ children: string; onClick: () => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/LessonDetail.jsx(118,14): error TS2322: Type '{ children: string; variant: string; onClick: () => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/LessonDetail.jsx(222,10): error TS2322: Type '{ children: (string | Element)[]; onClick: () => void; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Login.jsx(49,8): error TS2322: Type '{ children: (string | Element)[]; variant: string; className: string; onClick: () => void; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Login.jsx(75,12): error TS2322: Type '{ children: string; htmlFor: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Login.jsx(79,15): error TS2322: Type '{ id: string; type: string; autoComplete: string; autoFocus: true; placeholder: string; value: string; onChange: (e: any) => void; className: string; required: true; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'id' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Login.jsx(93,14): error TS2322: Type '{ children: string; htmlFor: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Login.jsx(101,15): error TS2322: Type '{ id: string; type: string; autoComplete: string; placeholder: string; value: string; onChange: (e: any) => void; className: string; required: true; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'id' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Login.jsx(112,10): error TS2322: Type '{ children: string | Element; type: string; className: string; disabled: boolean; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Register.jsx(75,8): error TS2741: Property 'footer' is missing in type '{ children: Element[]; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; title: string; subtitle: string; }' but required in type '{ icon: any; title: any; subtitle: any; footer: any; children: any; }'.
+src/pages/Register.jsx(86,12): error TS2322: Type '{ children: Element; maxLength: number; value: string; onChange: Dispatch<SetStateAction<string>>; autoFocus: true; autoComplete: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Register.jsx(93,14): error TS2559: Type '{ children: Element[]; }' has no properties in common with type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Register.jsx(94,29): error TS2322: Type '{ index: number; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'index' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Register.jsx(95,29): error TS2322: Type '{ index: number; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'index' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Register.jsx(96,29): error TS2322: Type '{ index: number; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'index' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Register.jsx(97,29): error TS2322: Type '{ index: number; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'index' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Register.jsx(98,29): error TS2322: Type '{ index: number; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'index' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Register.jsx(99,29): error TS2322: Type '{ index: number; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'index' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Register.jsx(103,10): error TS2322: Type '{ children: string | Element; className: string; onClick: () => Promise<void>; disabled: boolean; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Register.jsx(141,8): error TS2322: Type '{ children: (string | Element)[]; variant: string; className: string; onClick: () => void; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Register.jsx(167,12): error TS2322: Type '{ children: string; htmlFor: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Register.jsx(171,15): error TS2322: Type '{ id: string; type: string; autoComplete: string; autoFocus: true; placeholder: string; value: string; onChange: (e: any) => void; className: string; required: true; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'id' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Register.jsx(184,12): error TS2322: Type '{ children: string; htmlFor: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Register.jsx(188,15): error TS2322: Type '{ id: string; type: string; autoComplete: string; placeholder: string; value: string; onChange: (e: any) => void; className: string; required: true; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'id' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Register.jsx(200,12): error TS2322: Type '{ children: string; htmlFor: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Register.jsx(204,15): error TS2322: Type '{ id: string; type: string; autoComplete: string; placeholder: string; value: string; onChange: (e: any) => void; className: string; required: true; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'id' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Register.jsx(215,10): error TS2322: Type '{ children: string | Element; type: string; className: string; disabled: boolean; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/ResetPassword.jsx(57,6): error TS2741: Property 'footer' is missing in type '{ children: Element[]; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; title: string; subtitle: string; }' but required in type '{ icon: any; title: any; subtitle: any; footer: any; children: any; }'.
+src/pages/ResetPassword.jsx(69,12): error TS2322: Type '{ children: string; htmlFor: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/ResetPassword.jsx(73,15): error TS2322: Type '{ id: string; type: string; autoComplete: string; autoFocus: true; placeholder: string; value: string; onChange: (e: any) => void; className: string; required: true; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'id' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/ResetPassword.jsx(86,12): error TS2322: Type '{ children: string; htmlFor: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/ResetPassword.jsx(90,15): error TS2322: Type '{ id: string; type: string; autoComplete: string; placeholder: string; value: string; onChange: (e: any) => void; className: string; required: true; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'id' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/ResetPassword.jsx(101,10): error TS2322: Type '{ children: string | Element; type: string; className: string; disabled: boolean; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.
+src/pages/Translate.jsx(50,89): error TS2339: Property 'translation' does not exist on type 'string | object'.
+  Property 'translation' does not exist on type 'string'.
+src/pages/Translate.jsx(142,8): error TS2322: Type '{ children: (string | Element)[]; onClick: () => Promise<void>; disabled: boolean; className: string; }' is not assignable to type 'IntrinsicAttributes & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & RefAttributes<any>'.

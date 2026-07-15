@@ -1,0 +1,12 @@
+services:
+  lingua:
+    build: .
+    ports:
+      - "5000:5000"
+    env_file: .env
+    volumes:
+      - lingua-data:/data
+    environment:
+      DATABASE_PATH: /data/lingua.db
+volumes:
+  lingua-data:

@@ -1,0 +1,67 @@
+{
+  "name": "Lesson",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "language": {
+      "type": "string",
+      "enum": [
+        "English",
+        "Arabic",
+        "Turkish",
+        "Somali"
+      ]
+    },
+    "level": {
+      "type": "string",
+      "enum": [
+        "Beginner",
+        "Intermediate",
+        "Advanced"
+      ]
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "Vocabulary",
+        "Grammar",
+        "Speaking",
+        "Listening",
+        "Writing"
+      ]
+    },
+    "order": {
+      "type": "number"
+    },
+    "xp_reward": {
+      "type": "number"
+    },
+    "content": {
+      "type": "string",
+      "description": "JSON string with lesson content"
+    },
+    "quiz_data": {
+      "type": "string",
+      "description": "JSON string with quiz questions"
+    },
+    "image": {
+      "type": "string",
+      "format": "uri"
+    },
+    "duration_minutes": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "title",
+    "language",
+    "level",
+    "type",
+    "xp_reward"
+  ]
+}
