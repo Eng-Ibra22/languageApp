@@ -1,6 +1,7 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
 import { Home, BookOpen, Trophy, BarChart3, User, Languages } from "lucide-react";
 import { motion } from "framer-motion";
+import SomSpeakLogo from "@/components/SomSpeakLogo";
 
 const navItems = [
   { path: "/", icon: Home, label: "Home" },
@@ -16,9 +17,21 @@ export default function Layout() {
 
   return (
     <div className="font-inter min-h-screen bg-background flex flex-col">
+      {/* Top Brand Bar */}
+      <header className="sticky top-0 z-40 bg-card/80 backdrop-blur-xl border-b border-border">
+        <div className="max-w-lg mx-auto px-4 py-3 flex items-center justify-between">
+          <SomSpeakLogo size={32} showText />
+          <span className="text-xs text-muted-foreground font-medium tracking-wide">
+            Learn 4 Languages
+          </span>
+        </div>
+      </header>
+
       <main className="flex-1 pb-20 overflow-y-auto">
         <Outlet />
       </main>
+
+      {/* Bottom Nav */}
       <nav className="fixed bottom-0 left-0 right-0 bg-card/80 backdrop-blur-xl border-t border-border z-50">
         <div className="max-w-lg mx-auto flex items-center justify-around py-2 px-2">
           {navItems.map(({ path, icon: Icon, label }) => {

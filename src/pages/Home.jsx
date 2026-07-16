@@ -8,8 +8,6 @@ import StatCard from "../components/StatCard";
 import ProgressRing from "../components/ProgressRing";
 import { useEffect, useState } from "react";
 
-const HERO_IMG = "https://media.base44.com/images/public/6a1c3ce55b4d9bae4528110b/76ad42844_generated_image.png";
-
 export default function Home() {
   const [user, setUser] = useState(null);
   useEffect(() => {
@@ -23,9 +21,7 @@ export default function Home() {
 
   const { data: progress = [] } = useQuery({
     queryKey: ["user-progress"],
-    queryFn: async () => {
-      return localApi.progress();
-    },
+    queryFn: () => localApi.progress(),
   });
 
   const totalXP = progress.reduce((sum, p) => sum + (p.xp_earned || 0), 0);
@@ -44,6 +40,11 @@ export default function Home() {
   const getLangLessonsCount = (lang) =>
     lessons.filter((l) => l.language === lang).length;
 
+  const overallProgress =
+    lessons.length > 0
+      ? Math.round((completedLessons / lessons.length) * 100)
+      : 0;
+
   return (
     <div className="max-w-lg mx-auto px-4 pt-6">
       {/* Header */}
@@ -58,31 +59,77 @@ export default function Home() {
             {user?.full_name || "Learner"} 👋
           </h1>
         </div>
-        <ProgressRing progress={lessons.length > 0 ? Math.round((completedLessons / lessons.length) * 100) : 0} size={52} strokeWidth={4}>
-          <span className="text-[10px] font-bold">{lessons.length > 0 ? Math.round((completedLessons / lessons.length) * 100) : 0}%</span>
+        <ProgressRing progress={overallProgress} size={52} strokeWidth={4}>
+          <span className="text-[10px] font-bold">{overallProgress}%</span>
         </ProgressRing>
       </motion.div>
 
-      {/* Hero Banner */}
+      {/* Hero Banner — SomSpeak branded */}
       <motion.div
         initial={{ opacity: 0, scale: 0.97 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
         className="relative rounded-3xl overflow-hidden mb-6 h-44"
+        style={{
+          background:
+            "linear-gradient(135deg, #1e3a5f 0%, #0f2040 40%, #f97316 100%)",
+        }}
       >
-        <img src={HERO_IMG} alt="Learning" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+        {/* Decorative circles */}
+        <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full -translate-y-16 translate-x-16" />
+        <div className="absolute bottom-0 left-0 w-32 h-32 bg-orange-400/10 rounded-full translate-y-10 -translate-x-10" />
+        {/* Speech bubble SVG decoration */}
+        <svg
+          className="absolute right-6 top-6 opacity-20"
+          width="80"
+          height="80"
+          viewBox="0 0 100 100"
+          fill="none"
+        >
+          <rect x="8" y="10" width="72" height="52" rx="14" fill="white" />
+          <path d="M22 58 L14 74 L36 62 Z" fill="white" />
+          <rect x="20" y="26" width="30" height="6" rx="3" fill="#f97316" />
+          <rect x="20" y="38" width="44" height="6" rx="3" fill="#f97316" opacity="0.6" />
+          <rect x="20" y="50" width="20" height="6" rx="3" fill="#f97316" opacity="0.3" />
+        </svg>
         <div className="absolute bottom-0 left-0 right-0 p-5">
-          <h2 className="text-white font-bold text-lg">Lingua4</h2>
-          <p className="text-white/80 text-sm">Master 4 languages, one lesson at a time</p>
+          <h2 className="text-white font-bold text-xl tracking-tight">SomSpeak</h2>
+          <p className="text-white/75 text-sm mt-0.5">
+            Master 4 languages, one lesson at a time
+          </p>
+          <div className="flex items-center gap-3 mt-3">
+            {["🇬🇧", "🇸🇦", "🇹🇷", "🇸🇴"].map((flag, i) => (
+              <motion.span
+                key={i}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 + i * 0.1 }}
+                className="text-xl"
+              >
+                {flag}
+              </motion.span>
+            ))}
+          </div>
         </div>
       </motion.div>
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3 mb-6">
         <StatCard icon={Zap} label="Total XP" value={totalXP} index={0} />
-        <StatCard icon={Flame} label="Streak" value={`${Math.min(completedLessons, 7)}d`} color="text-orange-500" index={1} />
-        <StatCard icon={BookOpen} label="Lessons" value={completedLessons} color="text-accent" index={2} />
+        <StatCard
+          icon={Flame}
+          label="Streak"
+          value={`${Math.min(completedLessons, 7)}d`}
+          color="text-orange-500"
+          index={1}
+        />
+        <StatCard
+          icon={BookOpen}
+          label="Lessons"
+          value={completedLessons}
+          color="text-accent"
+          index={2}
+        />
       </div>
 
       {/* Languages */}

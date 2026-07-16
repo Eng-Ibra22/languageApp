@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
   const [authChecked, setAuthChecked] = useState(false);
   const [appPublicSettings] = useState({
     id: 'local',
-    public_settings: { auth_required: false, app_name: 'Lingua (Local Dev)' },
+    public_settings: { auth_required: false, app_name: 'SomSpeak' },
   });
 
   useEffect(() => {
