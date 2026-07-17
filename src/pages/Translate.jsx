@@ -35,6 +35,7 @@ const PROVIDER_LABELS = {
   deepl:          { name: "DeepL",        color: "text-blue-600 dark:text-blue-400",   bg: "bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800" },
   libretranslate: { name: "LibreTranslate",color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800" },
   google:         { name: "Google Translate",color:"text-red-600 dark:text-red-400",    bg: "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800" },
+  "google-free":  { name: "Google AI",    color: "text-orange-600 dark:text-orange-400",bg: "bg-orange-50 dark:bg-orange-950/20 border-orange-200 dark:border-orange-900/50" },
   azure:          { name: "Azure Translator",color:"text-sky-600 dark:text-sky-400",    bg: "bg-sky-50 dark:bg-sky-900/20 border-sky-200 dark:border-sky-800" },
   custom:         { name: "AI Translator", color: "text-purple-600 dark:text-purple-400",bg: "bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-800" },
   generic:        { name: "AI Translator", color: "text-purple-600 dark:text-purple-400",bg: "bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-800" },

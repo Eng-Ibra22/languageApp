@@ -557,6 +557,15 @@ const PHRASE_DICTIONARY = [
   { en: 'peace', ar: 'سلام', tr: 'barış', so: 'nabad', example: 'We all wish for peace.', tip: '"Nabad" is arguably the most important word in Somali culture — it appears in countless greetings and blessings.' },
   { en: 'book', ar: 'كتاب', tr: 'kitap', so: 'buug', example: 'I am reading an interesting book.', tip: 'Arabic "kitāb" (كتاب) gave us "kitap" in Turkish — a direct loanword preserved over centuries.' },
   { en: 'language', ar: 'لغة', tr: 'dil', so: 'luqad', example: 'Learning a new language opens doors.', tip: 'Turkish "dil" also means tongue — the organ of speech. Language and tongue are the same word!' },
+  { en: 'tree', ar: 'شجرة', tr: 'ağaç', so: 'geed', example: 'The green tree has many leaves.', tip: 'Somali "geed" can also mean any plant, wood, or herb in general.' },
+  { en: 'car', ar: 'سيارة', tr: 'araba', so: 'gaari', example: 'I park my car outside the house.', tip: 'Somali "gaari" is borrowed from car/gari, while Arabic "sayyara" comes from the root for moving.' },
+  { en: 'apple', ar: 'تفاح', tr: 'elma', so: 'tufaax', example: 'I eat a sweet red apple every day.', tip: 'Somali "tufaax" is a direct loanword from Arabic "tuffah".' },
+  { en: 'dog', ar: 'كلب', tr: 'köpek', so: 'ey', example: 'The dog is a loyal friend to humans.', tip: 'Be careful with Arabic "kalb" (dog) vs "qalb" (heart) sounds!' },
+  { en: 'cat', ar: 'قطة', tr: 'kedi', so: 'bisad', example: 'The cat likes to sleep in the sun.', tip: 'Somali "bisad" is also called "yaanyur" in some regional dialects.' },
+  { en: 'sun', ar: 'شمس', tr: 'güneş', so: 'qorrax', example: 'The sun rises in the east.', tip: '"Shams" in Arabic and "qorrax" in Somali are both grammatically feminine.' },
+  { en: 'moon', ar: 'قمر', tr: 'ay', so: 'dayax', example: 'The full moon shines brightly tonight.', tip: 'Turkish "ay" means both "moon" and "month", reflecting lunar calendars.' },
+  { en: 'star', ar: 'نجمة', tr: 'yıldız', so: 'xiddig', example: 'The sky is full of stars.', tip: 'Somali "xiddig" is used both for stellar bodies and as a popular name.' },
+  { en: 'flower', ar: 'زهرة', tr: 'çiçek', so: 'ubax', example: 'The flower smells beautiful.', tip: 'Somali "ubax" (flower) is a widely used feminine name.' },
 ];
 
 function smartTranslate(text, from, to) {
@@ -668,17 +677,15 @@ app.patch('/api/profile', requireAuth, (req, res) => { const { full_name, dark_m
 
 // ─── TRANSLATION CONFIG (public capability check — no secrets exposed) ────────
 app.get('/api/translation-config', requireAuth, (_req, res) => {
-  const hasApi = Boolean(process.env.TRANSLATION_API_URL);
-  const hasKey = Boolean(process.env.TRANSLATION_API_KEY);
-  // Detect provider from URL heuristics so frontend can label it correctly
+  const hasCustomApi = Boolean(process.env.TRANSLATION_API_URL);
   const url = process.env.TRANSLATION_API_URL || '';
-  let provider = 'generic';
+  let provider = 'google-free';
   if (url.includes('deepl')) provider = 'deepl';
   else if (url.includes('libretranslate')) provider = 'libretranslate';
   else if (url.includes('googleapis')) provider = 'google';
   else if (url.includes('microsoft') || url.includes('azure')) provider = 'azure';
-  else if (hasApi) provider = 'custom';
-  res.json({ aiEnabled: hasApi, hasKey, provider });
+  else if (hasCustomApi) provider = 'custom';
+  res.json({ aiEnabled: true, hasKey: hasCustomApi ? Boolean(process.env.TRANSLATION_API_KEY) : false, provider });
 });
 
 // ─── TRANSLATE ENDPOINT ───────────────────────────────────────────────────────
@@ -701,42 +708,85 @@ app.post('/api/translate', requireAuth, rateLimit(30, 60 * 1000), async (req, re
   if (from === to)
     return res.status(400).json({ error: 'Source and target languages must be different.', code: 'SAME_LANGUAGE' });
 
-  // ── Route to AI API or built-in dictionary ──
+  // 1. If custom API URL is configured, try it first
   if (process.env.TRANSLATION_API_URL) {
     try {
       const result = await translateViaApi(trimmed, from, to);
       return res.json({ ...result, source: 'ai' });
     } catch (err) {
-      console.error('[SomSpeak] Translation API error:', err.message);
-      // Determine whether the error is the API's fault or a config problem
-      const isTimeout = err.name === 'AbortError' || err.message.includes('abort');
-      const isAuth = err.message.includes('401') || err.message.includes('403');
-      const isServer = err.message.includes('5');
-      if (isAuth) {
-        return res.status(502).json({
-          error: 'The translation API rejected our credentials. Please check TRANSLATION_API_KEY.',
-          code: 'API_AUTH_ERROR',
-        });
+      console.error('[SomSpeak] Custom translation API failed, falling back to Google AI:', err.message);
+      // Fall back to Google Free API
+      try {
+        const result = await translateViaGoogleFree(trimmed, from, to);
+        return res.json({ ...result, source: 'ai', fallback: true });
+      } catch (gErr) {
+        console.error('[SomSpeak] Google AI fallback also failed, falling back to local dictionary:', gErr.message);
+        const result = smartTranslate(trimmed, from, to);
+        return res.json({ ...result, source: 'dictionary', fallback: true });
       }
-      if (isTimeout) {
-        return res.status(504).json({
-          error: 'The translation API timed out. Please try again.',
-          code: 'API_TIMEOUT',
-        });
-      }
-      // For server-side API errors, fall back to dictionary so the user still gets a result
-      console.warn('[SomSpeak] Falling back to built-in dictionary after API error.');
-      const fallback = smartTranslate(trimmed, from, to);
-      return res.json({ ...fallback, source: 'dictionary', fallback: true });
     }
   }
 
-  // ── Built-in smart dictionary (no API configured) ──
-  const result = smartTranslate(trimmed, from, to);
-  res.json({ ...result, source: 'dictionary' });
+  // 2. Default: Use free keyless Google AI API (translates everything)
+  try {
+    const result = await translateViaGoogleFree(trimmed, from, to);
+    return res.json({ ...result, source: 'ai' });
+  } catch (err) {
+    console.error('[SomSpeak] Google AI translation failed, falling back to local dictionary:', err.message);
+    const result = smartTranslate(trimmed, from, to);
+    return res.json({ ...result, source: 'dictionary', fallback: true });
+  }
 });
 
-// ── Multi-provider translation API caller ────────────────────────────────────
+// ── Google Free Keyless Translation API ──────────────────────────────────────
+async function translateViaGoogleFree(text, from, to) {
+  const langCodes = { English: 'en', Arabic: 'ar', Turkish: 'tr', Somali: 'so' };
+  const srcCode = langCodes[from];
+  const tgtCode = langCodes[to];
+  
+  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&dt=t&sl=${srcCode}&tl=${tgtCode}&q=${encodeURIComponent(text)}`;
+  
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
+  
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+      },
+      signal: controller.signal
+    });
+    
+    clearTimeout(timeoutId);
+    
+    if (!response.ok) {
+      throw new Error(`Google Translate server returned status ${response.status}`);
+    }
+    
+    const data = await response.json();
+    if (data && Array.isArray(data[0])) {
+      const translation = data[0]
+        .map(item => item[0])
+        .filter(Boolean)
+        .join('');
+        
+      return {
+        translation,
+        pronunciation: '',
+        example_sentence: '',
+        example_translation: '',
+        memory_tip: 'Repeat the translation aloud, then try using it in a short sentence of your own.'
+      };
+    }
+    throw new Error('Unexpected translation response structure.');
+  } catch (err) {
+    clearTimeout(timeoutId);
+    throw err;
+  }
+}
+
+// ── Custom configured translation API caller ─────────────────────────────────
 async function translateViaApi(text, from, to) {
   const langCodes = { English: 'en', Arabic: 'ar', Turkish: 'tr', Somali: 'so' };
   const srcCode = langCodes[from];
@@ -747,12 +797,10 @@ async function translateViaApi(text, from, to) {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 12000);
 
-  // ── Detect provider from URL and build the correct request body ──
   let requestBody;
   let requestHeaders = { 'Content-Type': 'application/json' };
 
   if (apiUrl.includes('deepl')) {
-    // DeepL v2 API format
     requestBody = JSON.stringify({
       text: [text],
       source_lang: srcCode.toUpperCase(),
@@ -760,7 +808,6 @@ async function translateViaApi(text, from, to) {
     });
     requestHeaders['Authorization'] = `DeepL-Auth-Key ${apiKey}`;
   } else {
-    // LibreTranslate / generic LibreTranslate-compatible format (most common)
     requestBody = JSON.stringify({
       q: text,
       source: srcCode,
@@ -792,7 +839,6 @@ async function translateViaApi(text, from, to) {
 
   const data = await response.json();
 
-  // ── Normalise response across provider formats ──
   let translation;
   if (apiUrl.includes('deepl') && Array.isArray(data.translations)) {
     translation = data.translations[0]?.text || text;
