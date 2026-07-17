@@ -1,4 +1,4 @@
-# Lingua
+# SomSpeak
 
 Standalone React, Express, and SQLite language-learning app.
 

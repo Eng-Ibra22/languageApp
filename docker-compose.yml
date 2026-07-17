@@ -1,12 +1,12 @@
 services:
-  lingua:
+  somspeak:
     build: .
     ports:
       - "5000:5000"
     env_file: .env
     volumes:
-      - lingua-data:/data
+      - somspeak-data:/data
     environment:
-      DATABASE_PATH: /data/lingua.db
+      DATABASE_PATH: /data/somspeak.db
 volumes:
-  lingua-data:
+  somspeak-data:

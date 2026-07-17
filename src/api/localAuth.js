@@ -4,7 +4,7 @@
 
 const BASE = import.meta.env.VITE_BASE44_APP_BASE_URL || window.location.origin;
 
-const TOKEN_KEY = 'lingua_local_token';
+const TOKEN_KEY = 'somspeak_local_token';
 
 function getToken() {
   return localStorage.getItem(TOKEN_KEY);

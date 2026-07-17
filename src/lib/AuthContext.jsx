@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
       console.error('User auth check failed:', error);
       setIsAuthenticated(false);
       if (error.status === 401 || error.status === 403) {
-        localAuth.clearToken && localAuth.getToken && localStorage.removeItem('lingua_local_token');
+        localAuth.clearToken && localAuth.getToken && localStorage.removeItem('somspeak_local_token');
         setAuthError({ type: 'auth_required', message: 'Session expired. Please log in again.' });
       }
     } finally {
@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }) => {
     if (shouldRedirect) {
       localAuth.logout('/login');
     } else {
-      localStorage.removeItem('lingua_local_token');
+      localStorage.removeItem('somspeak_local_token');
     }
   };
 

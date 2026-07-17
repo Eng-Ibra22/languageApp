@@ -10,7 +10,7 @@ const fs = require('fs');
 
 const app = express();
 const PORT = Number(process.env.PORT || 5000);
-const JWT_SECRET = process.env.JWT_SECRET || (process.env.NODE_ENV === 'production' ? null : 'lingua_local_dev_secret_change_in_production');
+const JWT_SECRET = process.env.JWT_SECRET || (process.env.NODE_ENV === 'production' ? null : 'somspeak_local_dev_secret_change_in_production');
 // SQLITE_DB_PATH is Railway-volume friendly; DATABASE_PATH remains supported for existing deployments.
 const DB_PATH = process.env.SQLITE_DB_PATH || process.env.DATABASE_PATH || path.join(__dirname, 'database.sqlite');
 const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'http://localhost:5173').split(',').map((value) => value.trim());
