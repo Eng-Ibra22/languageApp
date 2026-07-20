@@ -93,9 +93,13 @@ export const localAuth = {
   setToken,
   getToken,
 
-  /** Stub — Google OAuth won't work locally. */
+  /** Redirect to OAuth in prod, stub in local dev. */
   loginWithProvider(provider, redirectUrl) {
-    alert(`⚠️  Social login (${provider}) is not available in local dev mode.\n\nPlease use email/password registration instead.`);
+    if (import.meta.env.PROD) {
+      window.location.href = `${BASE}/api/auth/${provider}`;
+    } else {
+      alert(`⚠️  Social login (${provider}) is not available in local dev mode.\n\nPlease use email/password registration instead.`);
+    }
   },
 
   /** Stub — no OTP resend needed locally. */
