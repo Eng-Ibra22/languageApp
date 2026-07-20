@@ -16,6 +16,12 @@ export const AuthProvider = ({ children }) => {
   });
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const tokenFromUrl = params.get('token');
+    if (tokenFromUrl) {
+      localAuth.setToken(tokenFromUrl);
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
     checkUserAuth();
   }, []);
 

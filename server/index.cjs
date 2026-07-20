@@ -859,6 +859,71 @@ async function translateViaApi(text, from, to) {
   };
 }
 
+// ── Google OAuth 2.0 Endpoints ───────────────────────────────────────────────
+app.get('/api/auth/google', (req, res) => {
+  const clientId = process.env.GOOGLE_CLIENT_ID;
+  const redirectUri = process.env.GOOGLE_CALLBACK_URL || `${process.env.APP_URL || 'http://localhost:5173'}/api/auth/google/callback`;
+  
+  if (!clientId) return res.status(500).json({ error: 'Google OAuth is not configured on the server.' });
+  
+  const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=email%20profile&access_type=offline`;
+  res.redirect(authUrl);
+});
+
+app.get('/api/auth/google/callback', async (req, res) => {
+  const { code } = req.query;
+  const redirectUri = process.env.GOOGLE_CALLBACK_URL || `${process.env.APP_URL || 'http://localhost:5173'}/api/auth/google/callback`;
+  const clientId = process.env.GOOGLE_CLIENT_ID;
+  const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+  const frontendUrl = process.env.APP_URL || 'http://localhost:5173';
+
+  if (!code) return res.redirect(`${frontendUrl}/login?error=auth_failed`);
+
+  try {
+    const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        code,
+        client_id: clientId,
+        client_secret: clientSecret,
+        redirect_uri: redirectUri,
+        grant_type: 'authorization_code'
+      })
+    });
+    
+    if (!tokenRes.ok) throw new Error('Failed to exchange token');
+    const tokenData = await tokenRes.json();
+
+    const userRes = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+      headers: { Authorization: `Bearer ${tokenData.access_token}` }
+    });
+    
+    if (!userRes.ok) throw new Error('Failed to fetch user info');
+    const userData = await userRes.json();
+    
+    let user = db.prepare('SELECT * FROM users WHERE email=?').get(userData.email.toLowerCase());
+    
+    if (!user) {
+      // Create new user via Google
+      const randomPassword = crypto.randomBytes(32).toString('hex');
+      const info = db.prepare('INSERT INTO users (email,password_hash,full_name) VALUES (?,?,?)').run(
+        userData.email.toLowerCase(), 
+        bcrypt.hashSync(randomPassword, 12), 
+        userData.name || ''
+      );
+      db.prepare('INSERT INTO profiles (user_id) VALUES (?)').run(info.lastInsertRowid);
+      user = db.prepare('SELECT * FROM users WHERE id=?').get(info.lastInsertRowid);
+    }
+    
+    const jwtToken = issueToken(user);
+    res.redirect(`${frontendUrl}/?token=${jwtToken}`);
+  } catch (err) {
+    console.error('[Google OAuth Error]', err);
+    res.redirect(`${frontendUrl}/login?error=oauth_server_error`);
+  }
+});
+
 const isProduction = process.env.NODE_ENV === 'production' || process.env.RAILWAY_ENVIRONMENT === 'production' || Boolean(process.env.RAILWAY_STATIC_URL);
 if (isProduction) {
   const distPath = path.join(__dirname, '..', 'dist');
