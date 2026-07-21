@@ -924,6 +924,39 @@ app.get('/api/auth/google/callback', async (req, res) => {
   }
 });
 
+// ── Admin Routes ──────────────────────────────────────────────────────────────
+// Secured by ADMIN_SECRET env variable. Pass it as: x-admin-secret: <value>
+function requireAdmin(req, res, next) {
+  const secret = process.env.ADMIN_SECRET;
+  if (!secret) return res.status(503).json({ error: 'Admin access is not configured on this server. Set the ADMIN_SECRET environment variable.' });
+  const provided = req.headers['x-admin-secret'];
+  if (!provided || provided !== secret) return res.status(401).json({ error: 'Invalid or missing admin secret.' });
+  next();
+}
+
+app.get('/api/admin/users', requireAdmin, (req, res) => {
+  const page = Math.max(1, parseInt(req.query.page) || 1);
+  const limit = Math.min(100, Math.max(1, parseInt(req.query.limit) || 50));
+  const offset = (page - 1) * limit;
+  const search = req.query.search ? `%${req.query.search}%` : null;
+
+  const countRow = search
+    ? db.prepare('SELECT COUNT(*) as total FROM users WHERE email LIKE ? OR full_name LIKE ?').get(search, search)
+    : db.prepare('SELECT COUNT(*) as total FROM users').get();
+
+  const rows = search
+    ? db.prepare('SELECT id, email, full_name, created_at FROM users WHERE email LIKE ? OR full_name LIKE ? ORDER BY created_at DESC LIMIT ? OFFSET ?').all(search, search, limit, offset)
+    : db.prepare('SELECT id, email, full_name, created_at FROM users ORDER BY created_at DESC LIMIT ? OFFSET ?').all(limit, offset);
+
+  res.json({
+    total: countRow.total,
+    page,
+    limit,
+    pages: Math.ceil(countRow.total / limit),
+    users: rows.map(r => ({ id: r.id, email: r.email, full_name: r.full_name || '', created_at: r.created_at })),
+  });
+});
+
 const isProduction = process.env.NODE_ENV === 'production' || process.env.RAILWAY_ENVIRONMENT === 'production' || Boolean(process.env.RAILWAY_STATIC_URL);
 if (isProduction) {
   const distPath = path.join(__dirname, '..', 'dist');
